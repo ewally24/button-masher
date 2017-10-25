@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const port = process.env.PORT || 2400;
+const PORT = process.env.PORT || 2400;
 
 // listen the connection event for incoming sockets
 
