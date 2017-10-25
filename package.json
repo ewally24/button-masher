@@ -1,15 +1,16 @@
 {
   "name": "socket-chat-example",
   "version": "0.0.1",
-  "description": "my first socket.io app",
+  "description": "Button Masha",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "keywords": [
     "socket.io"
   ],
-  "author": "errol",
+  "author": "errol",``
   "license": "MIT",
   "dependencies": {
     "express": "^4.15.2",
