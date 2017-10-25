@@ -1,0 +1,22 @@
+.container {
+  padding-top: 20px;
+}
+
+.letter-btn {
+  font-family: 'Roboto, arial';
+  font-size: 16px;
+}
+
+.highscore {
+  padding-top: 89px;
+}
+
+.score-history {
+  opacity: 0;
+  margin-top: 35px;
+  transition: opacity 0.5s ease;
+}
+
+.score-history.visible {
+  opacity: 1;
+}

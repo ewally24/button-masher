@@ -1,0 +1,254 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>Button Master</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel='stylesheet' type='text/css' href='css/style.css' />
+  </head>
+  <body>
+    <div class='container'>
+      <div class='tile is-ancestor'>
+        <div class='tile is-4 is-vertical is-parent'>
+          <div class='tile is-child box'>
+            <div class="level-item has-text-centered">
+             <div>
+               <p class="heading">Timer</p>
+               <p class="title timerCount">10</p>
+             </div>
+           </div>
+          </div>
+          <div class='tile is is-child box'>
+            <div class="level-item has-text-centered">
+             <div>
+               <p class="heading">Responses</p>
+               <p class="title responseCount">0</p>
+             </div>
+           </div>
+          </div>
+        </div>
+        <div class='tile is-parent is-8'>
+          <div class='title is-child box'>
+              <a class='button is-primary arrow-up'>
+                <span class='icon is-large'>
+                  <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                </span>
+              </a>
+              <a class='button is-primary arrow-down'>
+                <span class='icon is-large'>
+                  <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                </span>
+              </a>
+              <a class='button is-primary arrow-left'>
+                <span class='icon is-large'>
+                  <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                </span>
+              </a>
+              <a class='button is-primary arrow-right'>
+                <span class='icon is-large'>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </span>
+              </a>
+
+              <a class='button is-primary letter-btn a-btn'>
+                <span class='icon is-large'>A</span>
+              </a>
+              <a class='button is-primary letter-btn b-btn'>
+                <span class='icon is-large'>B</span>
+              </a>
+              <a class='button is-primary letter-btn x-btn'>
+                <span class='icon is-large'>X</span>
+              </a>
+              <a class='button is-primary letter-btn y-btn'>
+                <span class='icon is-large'>Y</span>
+              </a>
+
+              <div class="level-item has-text-centered highscore">
+               <div>
+                 <p class="heading">High Score</p>
+                 <p class="title highscoreCount">0</p>
+               </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='notification is-primary score-history'>
+      <div class='container'>
+        <h1 class="title">
+          Score History
+        </h1>
+        <h2 class="subtitle">
+          Here are your past attempts!
+        </h2>
+
+        <ul class='rankings'>
+
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <section class="hero is-medium is-primary is-bold">
+  <div class="hero-body">
+
+      <h1 class="title">
+        Excellent Job!
+      </h1>
+      <h2 class="subtitle">
+        Current High Score! Can You Beat it?
+      </h2>
+
+      <div class="level-item has-text-centered highscore">
+       <div class='modal-highscore'>
+         <p class="heading">High Score</p>
+         <p class="title highscoreCount">0</p>
+       </div>
+     </div>
+
+    <a class='button play-btn is-primary is-inverted'>Play Again?</a>
+  </div>
+</section>
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+    $(function() {
+      socket = io();
+      responseCounter = 0;
+      seconds = 10;
+
+      document.addEventListener('keydown', function(event) {
+        var keyCode = event.which;
+
+        switch(keyCode) {
+          case 37:
+            $('.arrow-left').addClass('is-inverted');
+            responseCounter++;
+            $('.responseCount').text(responseCounter);
+            break;
+          case 38:
+            $('.arrow-up').addClass('is-inverted');
+            responseCounter++;
+            $('.responseCount').text(responseCounter);
+            break;
+          case 39:
+            $('.arrow-right').addClass('is-inverted');
+            responseCounter++;
+            $('.responseCount').text(responseCounter);
+            break;
+          case 40:
+            $('.arrow-down').addClass('is-inverted');
+            responseCounter++;
+            $('.responseCount').text(responseCounter);
+            break;
+          case 65:
+            $('.a-btn').addClass('is-inverted');
+            responseCounter++;
+            $('.responseCount').text(responseCounter);
+            break;
+          case 66:
+            $('.b-btn').addClass('is-inverted');
+            responseCounter++;
+            $('.responseCount').text(responseCounter);
+            break;
+          case 88:
+            $('.x-btn').addClass('is-inverted');
+            responseCounter++;
+            $('.responseCount').text(responseCounter);
+            break;
+          case 89:
+            $('.y-btn').addClass('is-inverted');
+            responseCounter++;
+            $('.responseCount').text(responseCounter);
+            break;
+          default:
+            return responseCounter;
+        }
+
+        socket.emit('counter message', responseCounter);
+      })
+
+      document.addEventListener('keyup', function(event) {
+        var keyCode = event.which;
+
+        switch(keyCode) {
+          case 37:
+            $('.arrow-left').removeClass('is-inverted');
+            break;
+          case 38:
+            $('.arrow-up').removeClass('is-inverted');
+            break;
+          case 39:
+            $('.arrow-right').removeClass('is-inverted');
+            break;
+          case 40:
+            $('.arrow-down').removeClass('is-inverted');
+            break;
+          case 65:
+            $('.a-btn').removeClass('is-inverted');
+            break;
+          case 66:
+            $('.b-btn').removeClass('is-inverted');
+            break;
+          case 88:
+            $('.x-btn').removeClass('is-inverted');
+            break;
+          case 89:
+            $('.y-btn').removeClass('is-inverted');
+            break;
+          default:
+            return responseCounter;
+        }
+      });
+
+      // After 10 Seconds, send the xCounter value to be broadcast on the server
+      var countdown;
+
+      function startCountdown() {
+         countdown = setInterval(function() {
+          seconds--;
+          $('.timerCount').text(seconds);
+          if(seconds == 0) {
+            clearInterval(countdown);
+            socket.emit('store highscore', responseCounter);
+            responseCounter = 0;
+            $('.modal').addClass('is-active');
+          }
+
+        }, 1000)
+      }
+
+      startCountdown();
+
+      $('.modal-close, .play-btn').click(function() {
+        $('.modal').removeClass('is-active');
+        $('.score-history').addClass('visible');
+          seconds = 10;
+          setTimeout(startCountdown, 1000); // restart after highScore is posted.
+      })
+
+      socket.on('highscore message', function(highScore) {
+        $('.highscoreCount').text(highScore);
+      })
+
+      // socket.on listening for event from server
+      socket.on('rankings message', function(responses) {
+      //  $('#messages').append($('<li>').text(msg));
+        console.log(responses);
+
+          var currentResponse = responses[responses.length -1];
+          $('.rankings').append($('<li>').text(currentResponse));
+
+      })
+    });
+    </script>
+  </body>
+  </html>
