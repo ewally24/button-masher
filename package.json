@@ -10,7 +10,7 @@
   "keywords": [
     "socket.io"
   ],
-  "author": "errol",``
+  "author": "errol",
   "license": "MIT",
   "dependencies": {
     "express": "^4.15.2",
