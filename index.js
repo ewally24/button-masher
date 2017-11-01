@@ -2,20 +2,25 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-const http = require('http').Server(app);
+const http = require('http').createServer(app);
 
 // create new instance of socket.io
 var io = require('socket.io')(http);
 
+const publicPath = path.join(__dirname, 'public');
+
 app.get('/', (req, res) => {
   // res.send('<h1>Hello World</h1>');
   // send index.html instead
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(path.join(publicPath, 'index.html'));
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(publicPath));
 
 const PORT = process.env.PORT || 2400;
+
+// set up data for the high scores collected over time.
+const leaderBoard = new Set();
 
 // listen the connection event for incoming sockets
 
@@ -23,21 +28,19 @@ const PORT = process.env.PORT || 2400;
 io.on('connection', function(socket) {
   console.log('a user connected');
 
-  // set up data for the high scores collected over time.
-  const leaderBoard = new Set();
   const rankings = [];
   socket.on('store highscore', function(responseCounter) {
     rankings.push(responseCounter);
+    console.log(rankings);
+    socket.emit('rankings message', rankings);
     rankings.sort(function(a,b) {
       return a - b;
-    })
+    });
 
     highScore = rankings[rankings.length - 1];
 
-    console.log(rankings);
 
     io.emit('highscore message', highScore);
-    socket.emit('rankings message', rankings);
   })
 
   socket.on('disconnect', function() {
@@ -48,3 +51,15 @@ io.on('connection', function(socket) {
 http.listen(PORT, () => {
   console.log('listening on *:2400');
 });
+
+/*
+socket.on('get scores', function() {
+  const scores = [];
+
+  for (score of leaderBoard.values()) {
+    scores.push(score);
+  }
+
+  socket.emit('scores', scores);
+});
+*/
